@@ -1,0 +1,3 @@
+name: pulumi-refactoring-aliases
+runtime: nodejs
+description: Pulumi example on refactoring resources using aliases.

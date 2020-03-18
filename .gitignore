@@ -1,0 +1,8 @@
+# NodeJS
+package-lock.json
+yarn.lock
+/bin/
+/node_modules/
+
+# Pulumi
+Pulumi.*.yaml
