@@ -7,6 +7,10 @@ This repository offers an example on how you can do this by leveraging the [`ali
 
 We will prepend the description of the subsequent steps so it is directly in sight when checkout out each branch.
 
+# Step 3 - Linking child resources to a more logical parent
+
+Some resources can only be created with another resource as input. This can already help in setting similar parent-child relationships between Pulumi resources. Let's change a few of these relationships.
+
 # Step 2 - Add the resources for the second customer
 
 We add the resources for the second customer as is. The second customer has not only a Gitlab repository, but we also create a Google Cloud project for the customer and allow Gitlab CI to access that project via the linked service account.
