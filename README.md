@@ -7,6 +7,38 @@ This repository offers an example on how you can do this by leveraging the [`ali
 
 We will prepend the description of the subsequent steps so it is directly in sight when checkout out each branch.
 
+# Step 4 - Introduce a custom resource abstraction
+
+Implement a subclass of `pulumi.ComponentResource` to create a custom abstraction. All naming has been reworked to prevent changes to the already created resources. Only the component abstractions will be created as new entries in your Pulumi state:
+
+```sh
+$ pulumi up
+Previewing update (dev):
+     Type                 Name                            Plan       
+     pulumi:pulumi:Stack  pulumi-refactoring-aliases-dev             
+ +   ├─ customer:Project  FirstCustomer                   create     
+ +   └─ customer:Project  SecondCustomer                  create     
+ 
+Resources:
+    + 2 to create
+    7 unchanged
+
+Do you want to perform this update? yes
+Updating (dev):
+     Type                 Name                            Status      
+     pulumi:pulumi:Stack  pulumi-refactoring-aliases-dev              
+ +   ├─ customer:Project  SecondCustomer                  created     
+ +   └─ customer:Project  FirstCustomer                   created     
+ 
+Resources:
+    + 2 created
+    7 unchanged
+
+Duration: 3s
+
+Permalink: https://app.pulumi.com/cumundi/pulumi-refactoring-aliases/dev/updates/5
+```
+
 # Step 3 - Linking child resources to a more logical parent
 
 Some resources can only be created with another resource as input. This can already help in setting similar parent-child relationships between Pulumi resources. Let's change a few of these relationships.
