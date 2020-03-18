@@ -7,6 +7,10 @@ This repository offers an example on how you can do this by leveraging the [`ali
 
 We will prepend the description of the subsequent steps so it is directly in sight when checkout out each branch.
 
+# Step 2 - Add the resources for the second customer
+
+We add the resources for the second customer as is. The second customer has not only a Gitlab repository, but we also create a Google Cloud project for the customer and allow Gitlab CI to access that project via the linked service account.
+
 # Step 1 - Add the resources for the first customer
 
 For our first customer, we started of with a Gitlab repository where we store the code needed to manage that customer. If you are running this code, you can choose where this Gitlab repository is created. If you do nothing, it will be created under your user account. If you want the repositories to be created in a separate group, you have to configure the Gitlab namespace id of the group:
