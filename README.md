@@ -7,6 +7,10 @@ This repository offers an example on how you can do this by leveraging the [`ali
 
 We will prepend the description of the subsequent steps so it is directly in sight when checkout out each branch.
 
+# Step 5 - Fix the forgotten parent-child relationships
+
+When introducing the custom resource abstraction, we forgot to set some parent-child relationships. But it is never too late to change this. We add the missing `parent` aliases to the code and run. No changes should be reported in the output, but the relationships in the Pulumi state will be updated.
+
 # Step 4 - Introduce a custom resource abstraction
 
 Implement a subclass of `pulumi.ComponentResource` to create a custom abstraction. All naming has been reworked to prevent changes to the already created resources. Only the component abstractions will be created as new entries in your Pulumi state:

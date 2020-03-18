@@ -36,6 +36,12 @@ export class Project extends pulumi.ComponentResource {
                 mergeMethod: "ff",
                 onlyAllowMergeIfPipelineSucceeds: true,
                 sharedRunnersEnabled: true
+            },
+            {
+                parent: this,
+                aliases: [
+                    { parent: pulumi.rootStackResource }
+                ]
             }
         )
 
@@ -45,6 +51,12 @@ export class Project extends pulumi.ComponentResource {
                 {
                     projectId: customerId,
                     name: pulumi.interpolate`${args.customer} Infrastructure`
+                },
+                {
+                    parent: this,
+                    aliases: [
+                        { parent: pulumi.rootStackResource }
+                    ]
                 }
             )
 
@@ -53,6 +65,12 @@ export class Project extends pulumi.ComponentResource {
                     accountId: serviceId,
                     displayName: pulumi.interpolate`Service Account for ${args.customer} project`,
                     project: googleCloudProject.projectId
+                },
+                {
+                    parent: googleCloudProject,
+                    aliases: [
+                        { parent: pulumi.rootStackResource }
+                    ]
                 }
             );
 
