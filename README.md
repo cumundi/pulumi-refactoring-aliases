@@ -5,6 +5,18 @@ Refactoring Pulumi code with `aliases`
 
 This repository offers an example on how you can do this by leveraging the [`aliases`](https://www.pulumi.com/docs/intro/concepts/programming-model/#aliases) property.
 
+We will prepend the description of the subsequent steps so it is directly in sight when checkout out each branch.
+
+# Step 1 - Add the resources for the first customer
+
+For our first customer, we started of with a Gitlab repository where we store the code needed to manage that customer. If you are running this code, you can choose where this Gitlab repository is created. If you do nothing, it will be created under your user account. If you want the repositories to be created in a separate group, you have to configure the Gitlab namespace id of the group:
+
+```sh
+$ pulumi config set gitlab:namespace <value>
+```
+
+with `<value>` the group ID which is displayed in the web portal underneath the group name.
+
 # Initialization
 
 Let's get started. The code in this repository is written in Typescript, so it is expected to have a working NodeJS distribution on your machine.
