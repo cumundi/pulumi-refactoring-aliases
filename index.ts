@@ -62,6 +62,12 @@ const serviceAccountSecondCustomer = new gcp.serviceAccount.Account("ServiceAcco
 const serviceAccountSecondCustomerKey = new gcp.serviceAccount.Key("ServiceAccountSecondCustomerKey",
     {
         serviceAccountId: serviceAccountSecondCustomer.email
+    },
+    {
+        parent: serviceAccountSecondCustomer,
+        aliases: [
+            { parent: pulumi.rootStackResource }
+        ]
     }
 );
 
@@ -73,5 +79,11 @@ const secondCustomerGitlabCIVariable = new gitlab.ProjectVariable("SecondCustome
         value: serviceAccountSecondCustomerKey.privateKey.apply(value => Buffer.from(value, 'base64').toString('utf-8')),
         protected: true,
         environmentScope: "*"
+    },
+    {
+        parent: secondCustomer,
+        aliases: [
+            { parent: pulumi.rootStackResource }
+        ]
     }
 )
