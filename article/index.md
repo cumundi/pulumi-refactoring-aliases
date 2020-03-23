@@ -8,8 +8,6 @@ Cumundi helps companies adopt cloud in a more integral way. Companies are develo
 
 ## How Pulumi code keeps up with changing requirements
 
-@Ringo: ofwel over Cumundi (en dus they en their...) ofwel we, our, ... Ik denk dat je meer our/I gebruikt, dus... (maar ik heb niet overal aangepast).
-
 At Cumundi we build reusable libraries for our customers to set up their infrastructure with a lot of best practices integrated. These best practices span the range of non-functionals, which are most of the time not taken up with the same focus as application feature development. Where these non-functionals can be integrated in infrastructure setups, we make sure these are taken care of in our code libraries. We focus on all three big cloud providers and try to provide application focused infrastructure libraries.
 
 For our internal infrastructure it is no surprise that we also use Pulumi. At this early phase of our company (we founded January 1st!), it is hard to foresee how we will evolve. With Pulumi, we write code in a regular programming language. A good habit when programming is to prevent [premature optimization](http://wiki.c2.com/?PrematureOptimization) as you can't predict the future. Another good habbit when writing code is [red-green-refactor](https://en.wikipedia.org/wiki/Test-driven_development). You take the current code, write a test for the new requirement which is initially failing (red), you implement the code in the most straightforward way to make the test succeed (green) and you complete the cycle by refactoring the code to keep the design in a proper shape.
@@ -17,7 +15,6 @@ For our internal infrastructure it is no surprise that we also use Pulumi. At th
 In this blog post, I will show such a cycle for Pulumi code with a reduced version of the code we use to set up the internal infrastructure we use ourselves for each customer. In this example, I will focus on one specific Pulumi resource property: [`aliases`](https://www.pulumi.com/docs/intro/concepts/programming-model/#aliases)
 
 All the code is [published here](https://github.com/cumundi/pulumi-refactoring-aliases) if you want to follow along with a full project setup. Every step described here is committed as a separate branch with the starting point on `master`, the default branch.
-@Ringo: hoe zit het met Osimis? Gaan die hun code herkennen, of omgekeerd, gaan ze zich afvragen waarom je voor Cumundi een andere versie maakt dan voor hen (die misschien beter is)?
 
 ### The starting point
 
@@ -114,7 +111,7 @@ As you can see below, when adding these resources, they are all added with the `
 
 ![Step 2](./step2.png)
 
-Visualisation goes along way, but a flat list of resources does not provide you clarity on what belongs together. 
+Visualisation goes a long way, but a flat list of resources does not provide you clarity on what belongs together. 
 
 ### Find relationships between resources
 
@@ -163,7 +160,7 @@ Before going forward, we also change the relationship between the Gitlab reposit
 
 In the previous step, I copied the code for the Gitlab repository from our first customer to our second customer. In this step, we will resolve this duplication issue. Along with it, we will make sure that customer projects can conditionally create the Google infrastructure needed.
 
-I introduce a `ComponentResource` subclass which encapsulates all this, moving the @Ringo: something missing?
+I introduce a `ComponentResource` subclass which encapsulates all this, moving the code for the individual resources into the customer resource class. As we set up Google Cloud resources for some of our customers, we create a Google Cloud project and related resources only when required. We can use a regular Typescript `if` conditional for this.
 
 ```ts
 import * as pulumi from "@pulumi/pulumi";
