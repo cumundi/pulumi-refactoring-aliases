@@ -2,19 +2,22 @@
 
 ![Profile Picture](./ProfielFotoPriveRound.png) Ringo De Smet
 
-**Guest Article:** [Ringo De Smet](https://www.linkedin.com/in/ringodesmet/), Founder of [Cumundi](https://www.cumundi.cloud), standardizes on Pulumi for writing infrastructure as code libraries to be delivered as reusable building blocks. Pulumi enables them to rapidly iterate through the build-test-release cycle of these building blocks.
+**Guest Article:** [Ringo De Smet](https://www.linkedin.com/in/ringodesmet/), Founder of [Cumundi](https://www.cumundi.cloud), standardizes on Pulumi for writing infrastructure as code libraries to be delivered as reusable building blocks. Pulumi enables him to rapidly iterate through the build-test-release cycle of these building blocks.
 
-Cumundi helps companies adopt cloud in a more integral way. Most companies are developping the same 75% of underlying infrastructure, but mostly with limited investment in integrating all the non-functionals of running applications in the cloud due to a shortage of people and time.
+Cumundi helps companies adopt cloud in a more integral way. Companies are developing the same 75% of underlying infrastructure. However, due to a shortage of people and time, there is a limited investment in integrating all the non-functionals of running applications in the cloud.
 
 ## How Pulumi code keeps up with changing requirements
 
-Cumundi builds reusable libraries for our customers to set up their infrastructure with a lot of best practices integrated. These best practices span the range of non-functionals which are most of the time not taken up with the same focus as application feature development. Where these non-functionals can be integrated in infrastructure setups, we make sure these are taken care of in our code libraries. We focus on all three big cloud providers and try to provide application focused infrastructure libraries.
+@Ringo: ofwel over Cumundi (en dus they en their...) ofwel we, our, ... Ik denk dat je meer our/I gebruikt, dus... (maar ik heb niet overal aangepast).
 
-For our internal infrastructure, it is no surprise that we also use Pulumi for this. At this early phase of our company (we founded 1 January!), it is hard to foresee how we will evolve. With Pulumi, we write code in a regular programming language. A good habit when programming is to prevent [premature optimization](http://wiki.c2.com/?PrematureOptimization) as you can't predict the future. Another good habbit when writing code is [red-green-refactor](https://en.wikipedia.org/wiki/Test-driven_development). You take the current code, write a test for the new requirement which is initially failing (red), you implement the code in the most straightforward way to make the test succeed (green) and you complete the cycle by refactoring the code to keep the design in a proper shape.
+At Cumundi we build reusable libraries for our customers to set up their infrastructure with a lot of best practices integrated. These best practices span the range of non-functionals, which are most of the time not taken up with the same focus as application feature development. Where these non-functionals can be integrated in infrastructure setups, we make sure these are taken care of in our code libraries. We focus on all three big cloud providers and try to provide application focused infrastructure libraries.
+
+For our internal infrastructure it is no surprise that we also use Pulumi. At this early phase of our company (we founded January 1st!), it is hard to foresee how we will evolve. With Pulumi, we write code in a regular programming language. A good habit when programming is to prevent [premature optimization](http://wiki.c2.com/?PrematureOptimization) as you can't predict the future. Another good habbit when writing code is [red-green-refactor](https://en.wikipedia.org/wiki/Test-driven_development). You take the current code, write a test for the new requirement which is initially failing (red), you implement the code in the most straightforward way to make the test succeed (green) and you complete the cycle by refactoring the code to keep the design in a proper shape.
 
 In this blog post, I will show such a cycle for Pulumi code with a reduced version of the code we use to set up the internal infrastructure we use ourselves for each customer. In this example, I will focus on one specific Pulumi resource property: [`aliases`](https://www.pulumi.com/docs/intro/concepts/programming-model/#aliases)
 
 All the code is [published here](https://github.com/cumundi/pulumi-refactoring-aliases) if you want to follow along with a full project setup. Every step described here is committed as a separate branch with the starting point on `master`, the default branch.
+@Ringo: hoe zit het met Osimis? Gaan die hun code herkennen, of omgekeerd, gaan ze zich afvragen waarom je voor Cumundi een andere versie maakt dan voor hen (die misschien beter is)?
 
 ### The starting point
 
@@ -26,7 +29,7 @@ import * as pulumi from "@pulumi/pulumi";
 const config = new pulumi.Config('gitlab')
 ```
 
-Applying the above code does nothing and shows this in the *Resources* tab on the hosted Pulumi platform:
+Applying the above code does nothing and this is shown in the *Resources* tab on the hosted Pulumi platform:
 
 ![Starting point](./start.png)
 
@@ -111,11 +114,11 @@ As you can see below, when adding these resources, they are all added with the `
 
 ![Step 2](./step2.png)
 
-Visualisation goes along way, but a flat list of resources does not provide you clarity on what goes together. 
+Visualisation goes along way, but a flat list of resources does not provide you clarity on what belongs together. 
 
 ### Find relationships between resources
 
-In our current state of the code, we created a Google Cloud service account and a key. Since a key can't be created without a service account. We also created a Gitlab CI project variable for the Gitlab project of the second customer. Two cases of a parent-child relationship.
+In the current state of the code, we created a Google Cloud service account and a key. Since a key can't be created without a service account, we also created a Gitlab CI project variable for the Gitlab project of the second customer. Two cases of a parent-child relationship.
 
 While we have this relationship between our resources, we do not see this in the Pulumi state graph. How can we change this without affecting the real resources on Gitlab and Google Cloud?
 
@@ -134,9 +137,9 @@ const serviceAccountSecondCustomerKey = new gcp.serviceAccount.Key("ServiceAccou
 );
 ```
 
-How can we tell Pulumi that the existing key resource fullfils the expectation in our code: the `aliases` property to the rescue!
+How can we tell Pulumi that the existing key resource fullfils the expectation in our code? The `aliases` property to the rescue!
 
-If you want to rename resources in your Pulumi state, or change the parent-child relationships, then the `aliases` property is your friend. Let us go ahead and indicate in our code that the existing key resource, which is linked to the `Stack` is the key we are interested in.
+If you want to rename resources in a Pulumi state, or change the parent-child relationships, then the `aliases` property is your friend. Let us go ahead and indicate in our code that the existing key resource, which is linked to the `Stack`, is the key we are interested in.
 
 ```ts
 const serviceAccountSecondCustomerKey = new gcp.serviceAccount.Key("ServiceAccountSecondCustomerKey",
@@ -160,7 +163,7 @@ Before going forward, we also change the relationship between the Gitlab reposit
 
 In the previous step, I copied the code for the Gitlab repository from our first customer to our second customer. In this step, we will resolve this duplication issue. Along with it, we will make sure that customer projects can conditionally create the Google infrastructure needed.
 
-I introduce a `ComponentResource` subclass which encapsulates all this, moving the 
+I introduce a `ComponentResource` subclass which encapsulates all this, moving the @Ringo: something missing?
 
 ```ts
 import * as pulumi from "@pulumi/pulumi";
@@ -211,7 +214,7 @@ export class Project extends pulumi.ComponentResource {
 }
 ```
 
-Now that I have my custom resource, I use it for my existing customers. My main Pulumi file is now reduced to this:
+Now that I have our custom resource, I use it for our existing customers. Our main Pulumi file is now reduced to this:
 
 ```ts
 const firstCustomer = new customer.Project("FirstCustomer",
@@ -277,16 +280,16 @@ export class Project extends pulumi.ComponentResource {
         )
 ```
 
-While we are changing parent-child relationships, the service account resource is also updated to have the Google Cloud project as its parent. The end result should look like below.
+While we are changing parent-child relationships, the service account resource is also updated to have the Google Cloud project as its parent. The end result should look like the state graph below.
 
 ![Step 5](./step5.png)
 
-If new people read this code, they might not immediately have a clear picture on how everything is wired up. However, looking at the Pulumi resource visualization, the following properties can immediately be deduced:
+If new people read this code, they might not immediately have a clear picture of how everything is wired up. However, looking at the Pulumi resource visualization, the following properties can immediately be deduced:
 
 * our infrastructure has 2 customer projects
 * one customer only has a Gitlab repository, while the other also has Google Cloud infrastructure
 * if we create a Google Cloud project, we create a service account and a key together with it
-* if we create a Google Cloud project, we also set a Gitlab CI variable. It's a pitty though that I can't link the Gitlab CI variable to the key too.
+* if we create a Google Cloud project, we also set a Gitlab CI variable. It's a pity though that I can't link the Gitlab CI variable to the key too.
 
 ### Next steps
 
